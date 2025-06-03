@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reward Generator</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      padding: 50px;
+      color: #333;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 30px;
+    }
+    .reward-box {
+      background-color: #fffbe6;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      font-size: 1.5em;
+      margin: 30px auto;
+      width: 80%;
+      max-width: 500px;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 15px 25px;
+      background-color: #ff6f91;
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+    button:hover {
+      background-color: #ff3e6c;
+    }
+    .winner-box {
+      background-color: #ffffffaa;
+      padding: 20px;
+      border-radius: 20px;
+      margin-top: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .winner-box h2 {
+      margin-bottom: 10px;
+    }
+    .winner-box ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .winner-box li {
+      font-size: 1.2em;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Reward Generator 🎉</h1>
+  <div class="reward-box" id="reward">Click the button to get your reward!</div>
+  <button id="rewardButton" onclick="generateReward()">Get Reward</button>
+
+  <div class="winner-box" id="winnerBox">
+    <h2>🎊 Today’s Winners 🎊</h2>
+    <ul id="winnerList"></ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    const rewards = [
+      "💤 You earned a guilt-free nap (pajamas mandatory)!",
+      "🍦 A double vanilla cone with rainbow sprinkles—no sharing required!",
+      "🍿 Unlimited snacks for 24 hours (popcorn included) 🎉",
+      "🛁 A royal bubble bath with rubber ducky support staff!",
+      "📺 Binge-watch your favorite comfort show without judgment!",
+      "🕺 A spontaneous solo dance party (you ARE the vibe)!",
+      "🧁 One magical cupcake that replenishes your joy meter!",
+      "🐶 Unlimited puppy videos—prescribed by the universe!",
+      "☕ A cozy drink of your choice with zero interruptions."
+    ];
+
+    const names = ["Jacob", "Victoria", "Ema", "Mubashir", "Kezia", "Shale", "Kevin", "Allison"];
+
+    function getRandomElements(array, count) {
+      const copy = [...array];
+      const result = [];
+      while (result.length < count && copy.length > 0) {
+        const index = Math.floor(Math.random() * copy.length);
+        result.push(copy.splice(index, 1)[0]);
+      }
+      return result;
+    }
+
+    function generateReward() {
+      const rewardText = rewards[Math.floor(Math.random() * rewards.length)];
+      document.getElementById('reward').textContent = rewardText;
+
+      const button = document.getElementById('rewardButton');
+      const rect = button.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: {
+          x: x / window.innerWidth,
+          y: y / window.innerHeight
+        }
+      });
+
+      const winners = getRandomElements(names, 5);
+      const assignedRewards = getRandomElements(rewards, 5);
+      const winnerList = document.getElementById("winnerList");
+      winnerList.innerHTML = "";
+
+      for (let i = 0; i < winners.length; i++) {
+        const li = document.createElement("li");
+        li.textContent = `${winners[i]} ➤ ${assignedRewards[i]}`;
+        winnerList.appendChild(li);
+      }
+    }
+  </script>
+</body>
+</html>
